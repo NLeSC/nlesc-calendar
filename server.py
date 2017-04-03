@@ -1,8 +1,16 @@
-from flask import Flask, request, send_from_directory, jsonify
-from settings import roomOutlookIds
+from flask import Flask, request, send_from_directory, jsonify, render_template
+from settings import roomOutlookIds, rooms
 
 import requests
 import json
+
+from datetime import datetime, timedelta
+
+def getStartDateLabel():
+    return datetime.now().strftime("%Y-%m-%d")
+
+def getEndDateLabel():
+    return (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
 
 # set the project root directory as the static folder, you can set others.
 app = Flask(__name__, static_url_path='')
@@ -13,13 +21,15 @@ def send_js(path):
 
 @app.route('/')
 def root():
-    return send_from_directory('.', 'index.html')
+    targetDate = getStartDateLabel()
+    baseUrl = 'http://localhost:5000'
+    return render_template('index.html', targetDate=targetDate, baseUrl=baseUrl, rooms=rooms)
 
 @app.route('/api/calendar/<calName>')
 def calendar(calName):
     # Generate these automatically
-    startDate = '2017-03-07'
-    endDate   = '2017-03-08'
+    startDate = getStartDateLabel()
+    endDate   = getEndDateLabel()
     outlookId = roomOutlookIds[calName]
     url = 'https://outlook.office365.com/owa/calendar/%s/service.svc?action=FindItem&ID=-1&AC=1'%outlookId
 
