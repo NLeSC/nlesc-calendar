@@ -1,15 +1,16 @@
-from flask import Flask, request, send_from_directory, jsonify, render_template
+from flask import Flask, send_from_directory, jsonify, render_template
 from settings import roomOutlookIds, rooms
 
 import requests
-import json
 
 from datetime import datetime, timedelta
 
 def getStartDateLabel():
+    # return "2017-04-03"
     return datetime.now().strftime("%Y-%m-%d")
 
 def getEndDateLabel():
+    # return "2017-04-04"
     return (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
 
 # set the project root directory as the static folder, you can set others.
@@ -22,8 +23,7 @@ def send_js(path):
 @app.route('/')
 def root():
     targetDate = getStartDateLabel()
-    baseUrl = 'http://localhost:5000'
-    return render_template('index.html', targetDate=targetDate, baseUrl=baseUrl, rooms=rooms)
+    return render_template('index.html', targetDate=targetDate, rooms=rooms)
 
 @app.route('/api/calendar/<calName>')
 def calendar(calName):
@@ -54,7 +54,7 @@ def calendar(calName):
         }
         calData.append(calEvent)
 
-    return jsonify(calData)
+    return jsonify(data=calData)
 
 
 if __name__ == "__main__":
