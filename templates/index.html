@@ -16,7 +16,7 @@
 		{% for room in rooms %}
 			{
 				id        : '{{ room['id'] }}',
-			  title     : '{{ room['title'] }}',
+				title     : '{{ room['title'] }}',
 				eventColor: '{{ room['eventColor'] }}'
 			},
 		{% endfor %}
@@ -27,6 +27,7 @@
 		$('#calendar').fullCalendar({
 			defaultView: 'agendaDay',
 			defaultDate: defaultDate,
+			ignoreTimezone: false,
 			editable: false,
 			selectable: true,
 			eventLimit: true, // allow "more" link when too many events
@@ -102,11 +103,17 @@
 		});
 	}
 
-  function addEvents(events) {
+	function addEvents(events) {
 		$.each(events['data'], function( index, event ) {
 			// var event = { 'id': '1', 'resourceId': 'a', 'start': '2017-03-06'         , 'end': '2017-03-08'         , 'title': 'event 1' };
+			event['start'] = convertToAmsterdamTimezone(event['start']);
+			event['end']   = convertToAmsterdamTimezone(event['end']);
 			$('#calendar').fullCalendar('renderEvent', event);
 		});
+	}
+
+	function convertToAmsterdamTimezone(date) {
+		return moment(date).utcOffset('Europe/Amsterdam').format()
 	}
 
 	$(document).ready(function() {
