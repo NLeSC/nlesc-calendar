@@ -13,3 +13,7 @@ Make sure to add your own `settings.py`. You can use `settings-example.py` as an
 Run python:
 
 ```python server.py```
+
+Run python (using gunicorn):
+
+```gunicorn --bind 0.0.0.0:80 server:app```
