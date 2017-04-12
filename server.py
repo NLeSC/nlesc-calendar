@@ -1,4 +1,6 @@
 from flask import Flask, send_from_directory, jsonify, render_template
+from flask_caching import Cache
+
 from settings import roomOutlookIds, rooms
 
 import requests
@@ -16,6 +18,9 @@ def getEndDateLabel():
 # set the project root directory as the static folder, you can set others.
 app = Flask(__name__, static_url_path='')
 
+# Setup cache
+cache = Cache(app,config={'CACHE_TYPE': 'simple'})
+
 @app.route('/node_modules/<path:path>')
 def send_js(path):
     return send_from_directory('node_modules', path)
@@ -26,7 +31,9 @@ def root():
     return render_template('index.html', targetDate=targetDate, rooms=rooms)
 
 @app.route('/api/calendar/<calName>')
+@cache.cached(timeout=60)
 def calendar(calName):
+    print '   Loading from MS ' + calName
     # Generate these automatically
     startDate = getStartDateLabel()
     endDate   = getEndDateLabel()
