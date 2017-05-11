@@ -1,7 +1,7 @@
 from flask import Flask, send_from_directory, jsonify, render_template
 from flask_caching import Cache
 
-from settings import roomOutlookIds, rooms
+from settings import roomOutlookIds, locations
 
 import requests
 
@@ -27,8 +27,15 @@ def send_js(path):
 
 @app.route('/')
 def root():
+    theLocations = { id:data['title'] for id,data in locations.iteritems() }
+    return render_template('index.html', locations=theLocations)
+
+@app.route('/<location>')
+def location(location):
+    rooms = locations[location]['rooms']
     targetDate = getStartDateLabel()
-    return render_template('index.html', targetDate=targetDate, rooms=rooms)
+    return render_template('location.html', targetDate=targetDate, rooms=rooms)
+
 
 @app.route('/api/calendar/<calName>')
 @cache.cached(timeout=60)
