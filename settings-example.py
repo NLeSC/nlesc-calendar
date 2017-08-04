@@ -3,7 +3,7 @@ roomOutlookIds = {
     'library'          : '',
     'stellarator'      : '',
     'compass'          : '',
-    'observa​​tory​​​​'      : '',
+    'observatory'      : '',
     'mass-spectrometer': '',
     'microscope'       : '',
     'radar'            : ''
@@ -20,7 +20,7 @@ roomsDownstairs = [
     { 'id': 'compass'           , 'title': 'Compass', 'eventColor': 'green' },
     { 'id': 'microscope'        , 'title': 'Microscope', 'eventColor': 'orange' },
     { 'id': 'mass-spectrometer' , 'title': 'Mass Spectrometer', 'eventColor': 'red' },
-    { 'id': 'observa​​tory​​​​' , 'title': 'Observa​​tory​​​​', 'eventColor': 'blue' }
+    { 'id': 'observatory' , 'title': 'Observatory', 'eventColor': 'blue' }
 ]
 
 locations = {
