@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "bootstrap": "^3.3.7",
-    "fullcalendar-scheduler": "^1.6.0"
+    "bootstrap": "3.3.7",
+    "fullcalendar-scheduler": "1.6.2"
   },
   "devDependencies": {},
   "scripts": {

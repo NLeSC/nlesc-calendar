@@ -30,7 +30,7 @@ def root():
     theLocations = { id:data['title'] for id,data in locations.iteritems() }
     return render_template('index.html', locations=theLocations)
 
-@app.route('/<location>')
+@app.route('/location/<location>')
 def location(location):
     rooms = locations[location]['rooms']
     targetDate = getStartDateLabel()
