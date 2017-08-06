@@ -24,6 +24,6 @@ roomsDownstairs = [
 ]
 
 locations = {
-    'up'  : { 'title': 'Upstairs'  , 'rooms': roomsUpstairs   },
-    'down': { 'title': 'Downstairs', 'rooms': roomsDownstairs }
+    'up'  : { 'title': 'Upstairs'  , 'rooms': roomsUpstairs  , map: 'img/nlesc_room_name_map_down.png' },
+    'down': { 'title': 'Downstairs', 'rooms': roomsDownstairs, map: 'img/nlesc_room_name_map_up.png' }
 }

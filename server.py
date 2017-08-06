@@ -25,6 +25,10 @@ cache = Cache(app,config={'CACHE_TYPE': 'simple'})
 def send_js(path):
     return send_from_directory('node_modules', path)
 
+@app.route('/img/<path:path>')
+def send_img(path):
+    return send_from_directory('img', path)
+
 @app.route('/')
 def root():
     theLocations = { id:data['title'] for id,data in locations.iteritems() }
@@ -33,9 +37,10 @@ def root():
 @app.route('/location/<location>')
 def location(location):
     rooms = locations[location]['rooms']
+    mapImg = locations[location]['map']
     targetDate = getStartDateLabel()
-    return render_template('location.html', targetDate=targetDate, rooms=rooms)
-
+    return render_template('location.html', targetDate=targetDate, rooms=rooms,
+                            mapImg = mapImg)
 
 @app.route('/api/calendar/<calName>')
 @cache.cached(timeout=60)

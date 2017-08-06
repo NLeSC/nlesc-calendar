@@ -3,16 +3,19 @@
 <head>
 <meta charset='utf-8' />
 <meta http-equiv="refresh" content="360" />
-<link href='/node_modules/fullcalendar-scheduler/dist/scheduler.min.css' rel='stylesheet' />
 <link href='/node_modules/bootstrap/dist/css/bootstrap-theme.min.css' rel='stylesheet' />
 <link href='/node_modules/bootstrap/dist/css/bootstrap.min.css' rel='stylesheet' />
+
 <link href='/node_modules/fullcalendar/dist/fullcalendar.min.css' rel='stylesheet' />
-<link href='/node_modules/fullcalendar/dist/fullcalendar.print.min.css' rel='stylesheet' />
+<link href='/node_modules/fullcalendar/dist/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+<link href='/node_modules/fullcalendar-scheduler/dist/scheduler.min.css' rel='stylesheet' />
 
 <script src='/node_modules/moment/min/moment.min.js'></script>
 <script src='/node_modules/jquery/dist/jquery.min.js'></script>
 <script src='/node_modules/fullcalendar/dist/fullcalendar.min.js'></script>
+<script src='/node_modules/fullcalendar/dist/gcal.min.js'></script>
 <script src='/node_modules/fullcalendar-scheduler/dist/scheduler.min.js'></script>
+<script src='/node_modules/bootstrap/dist/js/bootstrap.min.js'></script>
 <script>
 	const defaultDate = '{{ targetDate }}';
 	const baseUrl = '/api/calendar/';
@@ -29,15 +32,19 @@
 	$(function() { // document ready
 
 		$('#calendar').fullCalendar({
+			schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
 			defaultView: 'agendaDay',
 			defaultDate: defaultDate,
 			ignoreTimezone: false,
 			editable: false,
 			selectable: true,
 			eventLimit: true, // allow "more" link when too many events
+			minTime: '09:00',
+			maxTime: '19:00',
+			contentHeight: 'auto',
 			header: {
 				// left: 'prev,next today',
-				center: 'title',
+				center: '',
 				//    right: 'agendaDay,agendaTwoDay,agendaWeek,month'
 			},
 			views: {
@@ -97,7 +104,15 @@
 </style>
 </head>
 <body>
-	<div id='calendar'></div>
+  <div id="calendar"></div>
+
+	<footer class="footer">
+	  <div class="container">
+	  	<img class="img-responsive" src='{{ mapImg }}'>
+	  </div>
+	</footer>
+
+
 <script>
 	function loadRoomCalendar( room ) {
 		var url     = baseUrl + room;
