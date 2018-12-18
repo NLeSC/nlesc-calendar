@@ -29,6 +29,10 @@ def send_js(path):
 def send_img(path):
     return send_from_directory('img', path)
 
+@app.route('/favicon.ico')
+def send_favicon():
+    return send_from_directory('img', 'favicon.ico')
+
 @app.route('/')
 def root():
     theLocations = { id:data['title'] for id,data in locations.iteritems() }
