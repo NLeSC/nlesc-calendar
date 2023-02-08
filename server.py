@@ -8,11 +8,11 @@ import requests
 from datetime import datetime, timedelta
 
 def getStartDateLabel():
-    # return "2017-04-03"
+    # return "2023-02-01"
     return datetime.now().strftime("%Y-%m-%d")
 
 def getEndDateLabel():
-    # return "2017-04-04"
+    # return "2023-02-02"
     return (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
 
 # set the project root directory as the static folder, you can set others.
@@ -35,7 +35,7 @@ def send_favicon():
 
 @app.route('/')
 def root():
-    theLocations = { id:data['title'] for id,data in locations.iteritems() }
+    theLocations = { id:data['title'] for id,data in locations.items() }
     return render_template('index.html', locations=theLocations)
 
 @app.route('/location/<location>')
@@ -49,12 +49,14 @@ def location(location):
 @app.route('/api/calendar/<calName>')
 @cache.cached(timeout=60)
 def calendar(calName):
-    print '   Loading from MS ' + calName
+    print('   Loading from MS ' + calName)
     # Generate these automatically
     startDate = getStartDateLabel()
     endDate   = getEndDateLabel()
     outlookId = roomOutlookIds[calName]
     url = 'https://outlook.office365.com/owa/calendar/%s/service.svc?action=FindItem&ID=-1&AC=1'%outlookId
+
+    print('Calling URL: ' + url)
 
     bodyTemplate = open('bodyTemplate.txt', 'r').read()
     body = bodyTemplate%(startDate, endDate)
@@ -62,6 +64,8 @@ def calendar(calName):
 
     resp = requests.post(url, headers=headers, data=body)
     respJson = resp.json()
+
+    print ('Response', respJson)
 
     # Name the things in between just for fun ?
     events = respJson['Body']['ResponseMessages']['Items'][0]['RootFolder']['Items']
