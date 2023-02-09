@@ -49,14 +49,11 @@ def location(location):
 @app.route('/api/calendar/<calName>')
 @cache.cached(timeout=60)
 def calendar(calName):
-    print('   Loading from MS ' + calName)
     # Generate these automatically
     startDate = getStartDateLabel()
     endDate   = getEndDateLabel()
     outlookId = roomOutlookIds[calName]
     url = 'https://outlook.office365.com/owa/calendar/%s/service.svc?action=FindItem&ID=-1&AC=1'%outlookId
-
-    print('Calling URL: ' + url)
 
     bodyTemplate = open('bodyTemplate.txt', 'r').read()
     body = bodyTemplate%(startDate, endDate)
@@ -64,8 +61,6 @@ def calendar(calName):
 
     resp = requests.post(url, headers=headers, data=body)
     respJson = resp.json()
-
-    print ('Response', respJson)
 
     # Name the things in between just for fun ?
     events = respJson['Body']['ResponseMessages']['Items'][0]['RootFolder']['Items']
