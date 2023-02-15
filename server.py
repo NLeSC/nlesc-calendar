@@ -59,24 +59,27 @@ def calendar(calName):
     body = bodyTemplate%(startDate, endDate)
     headers = { 'Action': 'FindItem', "Content-Type": "application/json; charset=UTF-8" }
 
-    resp = requests.post(url, headers=headers, data=body)
-    respJson = resp.json()
-
-    # Name the things in between just for fun ?
-    events = respJson['Body']['ResponseMessages']['Items'][0]['RootFolder']['Items']
-
     calData = []
-    for event in events:
-        calEvent = {
-            'resourceId': calName,
-            'id'        : event['ItemId']['Id'],
-            'start'     : event['Start'],
-            'end'       : event['End'],
-            'title'     : event['Subject']
-        }
-        calData.append(calEvent)
+    try:
+        resp = requests.post(url, headers=headers, data=body)
+        respJson = resp.json()
 
-    return jsonify(data=calData)
+        # Name the things in between just for fun ?
+        events = respJson['Body']['ResponseMessages']['Items'][0]['RootFolder']['Items']
+
+        for event in events:
+            calEvent = {
+                'resourceId': calName,
+                'id'        : event['ItemId']['Id'],
+                'start'     : event['Start'],
+                'end'       : event['End'],
+                'title'     : event['Subject']
+            }
+            calData.append(calEvent)
+            status = 'ok'
+    except Exception as e:
+        status = 'error -- ' + str(e)
+    return jsonify(data=calData, status=status)
 
 
 if __name__ == "__main__":
