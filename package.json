@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "bootstrap": "3.3.7",
-    "fullcalendar-scheduler": "1.6.2"
+    "bootstrap": "5.2.3",
+    "fullcalendar-scheduler": "6.1.4",
+    "jquery": "^3.6.3",
+    "moment": "^2.29.4"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

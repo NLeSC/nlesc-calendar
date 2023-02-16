@@ -8,11 +8,11 @@ import requests
 from datetime import datetime, timedelta
 
 def getStartDateLabel():
-    # return "2017-04-03"
+    # return "2023-02-01"
     return datetime.now().strftime("%Y-%m-%d")
 
 def getEndDateLabel():
-    # return "2017-04-04"
+    # return "2023-02-02"
     return (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
 
 # set the project root directory as the static folder, you can set others.
@@ -35,7 +35,7 @@ def send_favicon():
 
 @app.route('/')
 def root():
-    theLocations = { id:data['title'] for id,data in locations.iteritems() }
+    theLocations = { id:data['title'] for id,data in locations.items() }
     return render_template('index.html', locations=theLocations)
 
 @app.route('/location/<location>')
@@ -49,7 +49,6 @@ def location(location):
 @app.route('/api/calendar/<calName>')
 @cache.cached(timeout=60)
 def calendar(calName):
-    print '   Loading from MS ' + calName
     # Generate these automatically
     startDate = getStartDateLabel()
     endDate   = getEndDateLabel()
@@ -60,24 +59,27 @@ def calendar(calName):
     body = bodyTemplate%(startDate, endDate)
     headers = { 'Action': 'FindItem', "Content-Type": "application/json; charset=UTF-8" }
 
-    resp = requests.post(url, headers=headers, data=body)
-    respJson = resp.json()
-
-    # Name the things in between just for fun ?
-    events = respJson['Body']['ResponseMessages']['Items'][0]['RootFolder']['Items']
-
     calData = []
-    for event in events:
-        calEvent = {
-            'resourceId': calName,
-            'id'        : event['ItemId']['Id'],
-            'start'     : event['Start'],
-            'end'       : event['End'],
-            'title'     : event['Subject']
-        }
-        calData.append(calEvent)
+    try:
+        resp = requests.post(url, headers=headers, data=body)
+        respJson = resp.json()
 
-    return jsonify(data=calData)
+        # Name the things in between just for fun ?
+        events = respJson['Body']['ResponseMessages']['Items'][0]['RootFolder']['Items']
+
+        for event in events:
+            calEvent = {
+                'resourceId': calName,
+                'id'        : event['ItemId']['Id'],
+                'start'     : event['Start'],
+                'end'       : event['End'],
+                'title'     : event['Subject']
+            }
+            calData.append(calEvent)
+            status = 'ok'
+    except Exception as e:
+        status = 'error -- ' + str(e)
+    return jsonify(data=calData, status=status)
 
 
 if __name__ == "__main__":
