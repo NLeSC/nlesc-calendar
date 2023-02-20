@@ -76,7 +76,7 @@ def calendar(calName):
                 'title'     : event['Subject']
             }
             calData.append(calEvent)
-            status = 'ok'
+        status = 'ok'
     except Exception as e:
         status = 'error -- ' + str(e)
     return jsonify(data=calData, status=status)
