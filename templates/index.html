@@ -14,16 +14,14 @@
 </style>
 </head>
 <body>
-
 	<div class="container container-table">
 	    <div class="row vertical-center-row">
-				{% for id, title in locations.items() %}
-					<div class="bs-example text-center">
-					    <a href="/location/{{ id }}" class="btn btn-primary btn-lg">{{ title }}</a>
-					</div>
-				{% endfor %}
+		{% for id, title in locations.items() %}
+			<div class="bs-example text-center">
+				<a href="/location/{{ id }}" class="btn btn-primary btn-lg">{{ title }}</a>
+			</div>
+		{% endfor %}
 	    </div>
 	</div>
-
 </body>
 </html>
