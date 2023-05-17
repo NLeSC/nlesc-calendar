@@ -1,0 +1,14 @@
+[Unit]
+Description=NLeSC calendar service
+
+# You may want to start after your network is ready
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/start-gunicorn.sh
+Restart=Always
+PIDFile=/tmp/nlesc_calendar_pid
+
+[Install]
+WantedBy=network-online.target
